@@ -11,11 +11,15 @@ url = 'https://moigolos.pro/app/KA6'
 # df = pd.read_csv('gen3/opros1.csv')
 df = pd.read_csv('opros1.csv')
 sleepAfterAnswer, sleeptime = False, 1
+WaitingTime = 2 * 60
 
 
 # Открываем веб-страницу
 def AnswerRadio(Qwestion, driver, Counter):
-    time.sleep(0.2)
+    # time.sleep(0.2)
+    element = WebDriverWait(driver, WaitingTime).until(
+    EC.presence_of_element_located((By.XPATH, "//input[contains(@class, 'ant-radio-input')]"))
+    )
     def FindAnsText(Qwestion, Index):
         if Qwestion == 1:
             An = ['успешно развивающееся предприятие', 'предприятие, работающее стабильно (но не развивающееся)',
@@ -180,6 +184,9 @@ def AnswerRadio(Qwestion, driver, Counter):
 
 def AnswerNPS(driver, Index):
     # time.sleep(2)
+    element = WebDriverWait(driver, WaitingTime).until(
+    EC.presence_of_element_located((By.CLASS_NAME, 'ballWrapper_9614cd1c3d8059991014d17c5effe8ff'))
+    )
     radio_buttons = driver.find_elements(By.CLASS_NAME, 'ballWrapper_9614cd1c3d8059991014d17c5effe8ff')
     # print(radio_buttons)
     # print('df[A4][Index]',df['A4'][Index])
@@ -196,6 +203,9 @@ def AnswerForm(FormNumber, driver):
     try:
         button = driver.find_element(By.CLASS_NAME, 'ant-btn-primary')
         button.click()
+    #     element = WebDriverWait(driver, WaitingTime).until(
+    # EC.presence_of_element_located((By.CLASS_NAME, 'ant-btn-primary'))
+    # )
         time.sleep(sleeptime)
         # print(f'Вопрос {FormNumber} отвечен')
     except:
@@ -209,7 +219,10 @@ for i in range(len(df['A1'])):
     t1 = datetime.now()
     driver = webdriver.Chrome()
     driver.get(url)
-    time.sleep(6)
+    element = WebDriverWait(driver, WaitingTime).until(
+    EC.presence_of_element_located((By.XPATH, "//input[contains(@class, 'ant-radio-input')]"))
+    )
+    # time.sleep(6)
     try:
         AnswerRadio(1, driver, counter)
         AnswerForm(1, driver)
@@ -217,7 +230,7 @@ for i in range(len(df['A1'])):
         AnswerForm(2, driver)
         AnswerRadio(3, driver, counter)
         AnswerForm(3, driver)
-        AnswerRadio(4, driver, counter)
+        # AnswerRadio(4, driver, counter)
         AnswerNPS(driver, counter)
         AnswerForm(4, driver)
         AnswerRadio(5, driver, counter)

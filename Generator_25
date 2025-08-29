@@ -12,7 +12,7 @@ class Answers():
         self.A1 = [57, 32, 10, 1]
         self.A2 = [71, 21,5,3]
         self.A3 = [40, 52, 7, 1]
-        self.A4 = [8,25,34,9,6,6,5,3,3,1]
+        self.A4 = [1,3,3,5,6,6,9,34,25,8]
         self.A5 = [10, 12, 8, 11, 19, 7,33]
         self.A6 = [5, 6, 11, 3, 3, 5, 67]
         self.A7 = [9, 28, 37, 26]
@@ -26,21 +26,21 @@ class Answers():
         self.A15 = [45, 38, 14, 3]
         self.A16 = [41, 26, 24, 9]
         self.A17 = [49, 27, 21, 3]
-        self.A18 = [55, 21, 19, 5]
-        self.A19 = [48, 29, 17, 6]
+        self.A18 = [45, 31, 19, 5]
+        self.A19 = [43, 34, 17, 6]
         self.A20 = [46, 27, 23, 4]
         self.A21 = [47, 31, 19, 3]
         self.A22 = [45, 32, 17, 6]
         self.A23 = [48, 43, 7, 2]
         self.A24 = [49, 29, 18, 4]
-        self.A25 = [43, 27, 16, 14,]
-        self.A26 = [47, 31, 17, 5]
+        self.A25 = [16, 41, 25, 18]
+        self.A26 = [31, 47, 17, 5]
         self.A27 = [6, 4, 6, 11,73]
         self.A28 = [52, 34, 6, 8]
-        self.A29 = [66, 29, 3, 2]
+        self.A29 = [31, 64, 3, 2]
         self.A30 = [63, 22, 13, 2]
         self.A31 = [66, 30, 3, 1]
-        self.A32 = [45, 28, 24, 3]
+        self.A32 = [28,45, 24, 3]
         self.A33 = [31, 37, 22, 10]
         self.A34 = [28, 46, 20, 6]
         self.A35 = [3, 6, 8, 6, 11, 21, 34, 11]
@@ -53,6 +53,12 @@ class Answers():
         mas = []
         for i in range(len(A)):
             mas += [i] * A[i]
+        mas = np.array(mas)
+        return np.random.permutation(mas)
+    def GenerateNpc(self, A):
+        mas = []
+        for i in range(len(A)):
+            mas += [i+1] * A[i]
         mas = np.array(mas)
         return np.random.permutation(mas)
 
@@ -70,7 +76,7 @@ class Answers():
         df['A1'] = self.Generate4Ans(self.A1)
         df['A2'] = self.Generate4Ans(self.A2)
         df['A3'] = self.Generate4Ans(self.A3)
-        df['A4'] = self.GenerateUneversal(self.A4)
+        df['A4'] = self.GenerateNpc(self.A4)
         df['A5'] = self.GenerateUneversal(self.A5)
         df['A6'] = self.GenerateUneversal(self.A6)
         df['A7'] = self.Generate4Ans(self.A7)
