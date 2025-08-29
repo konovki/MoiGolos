@@ -1,0 +1,117 @@
+import pandas as pd
+import numpy as np
+
+# import matplotlib.pyplot as plt
+
+N = 1000
+
+
+class Answers():
+    def __init__(self):
+        self.NumberOfPeople = 100
+        self.A1 = [57, 32, 10, 1]
+        self.A2 = [71, 21,5,3]
+        self.A3 = [40, 52, 7, 1]
+        self.A4 = [8,25,34,9,6,6,5,3,3,1]
+        self.A5 = [10, 12, 8, 11, 19, 7,33]
+        self.A6 = [5, 6, 11, 3, 3, 5, 67]
+        self.A7 = [9, 28, 37, 26]
+        self.A8 = [53, 37, 10]
+        self.A9 = [51, 42, 7]
+        self.A10 = [35, 51, 10, 4]
+        self.A11 = [74, 26]
+        self.A12 = [23, 58, 11, 8]
+        self.A13 = [49, 42, 5, 4]
+        self.A14 = [43, 48, 7, 2]
+        self.A15 = [45, 38, 14, 3]
+        self.A16 = [41, 26, 24, 9]
+        self.A17 = [49, 27, 21, 3]
+        self.A18 = [55, 21, 19, 5]
+        self.A19 = [48, 29, 17, 6]
+        self.A20 = [46, 27, 23, 4]
+        self.A21 = [47, 31, 19, 3]
+        self.A22 = [45, 32, 17, 6]
+        self.A23 = [48, 43, 7, 2]
+        self.A24 = [49, 29, 18, 4]
+        self.A25 = [43, 27, 16, 14,]
+        self.A26 = [47, 31, 17, 5]
+        self.A27 = [6, 4, 6, 11,73]
+        self.A28 = [52, 34, 6, 8]
+        self.A29 = [66, 29, 3, 2]
+        self.A30 = [63, 22, 13, 2]
+        self.A31 = [66, 30, 3, 1]
+        self.A32 = [45, 28, 24, 3]
+        self.A33 = [31, 37, 22, 10]
+        self.A34 = [28, 46, 20, 6]
+        self.A35 = [3, 6, 8, 6, 11, 21, 34, 11]
+        self.A36 = [1, 16, 9, 12, 22, 20, 15,5]
+        self.A37 = [62, 38]
+        self.A38 = [15, 29, 56]
+        self.A39 = [20, 40, 40]
+
+    def GenerateUneversal(self, A):
+        mas = []
+        for i in range(len(A)):
+            mas += [i] * A[i]
+        mas = np.array(mas)
+        return np.random.permutation(mas)
+
+    def Generate4Ans(self, A):
+        return np.random.permutation(np.array([0] * A[0] + [1] * A[1] + [2] * A[2] + [3] * A[3]))
+
+    def Generate3Ans(self, A):
+        return np.random.permutation(np.array([0] * A[0] + [1] * A[1] + [2] * A[2]))
+
+    def Generate2Ans(self, A):
+        return np.random.permutation(np.array([0] * A[0] + [1] * A[1]))
+
+    def GenerateDf(self):
+        df = pd.DataFrame(index=np.arange(0, self.NumberOfPeople, 1))
+        df['A1'] = self.Generate4Ans(self.A1)
+        df['A2'] = self.Generate4Ans(self.A2)
+        df['A3'] = self.Generate4Ans(self.A3)
+        df['A4'] = self.GenerateUneversal(self.A4)
+        df['A5'] = self.GenerateUneversal(self.A5)
+        df['A6'] = self.GenerateUneversal(self.A6)
+        df['A7'] = self.Generate4Ans(self.A7)
+        df['A8'] = self.Generate3Ans(self.A8)
+        df['A9'] = self.Generate3Ans(self.A9)
+        df['A10'] = self.Generate4Ans(self.A10)
+        df['A11'] = self.Generate2Ans(self.A11)
+        df['A12'] = self.Generate4Ans(self.A12)
+        df['A13'] = self.Generate4Ans(self.A13)
+        df['A14'] = self.Generate4Ans(self.A14)
+        df['A15'] = self.Generate4Ans(self.A15)
+        df['A16'] = self.Generate4Ans(self.A16)
+        df['A17'] = self.Generate4Ans(self.A17)
+        df['A18'] = self.Generate4Ans(self.A18)
+        df['A19'] = self.Generate4Ans(self.A19)
+        df['A20'] = self.Generate4Ans(self.A20)
+        df['A21'] = self.Generate4Ans(self.A21)
+        df['A22'] = self.Generate4Ans(self.A22)
+        df['A23'] = self.Generate4Ans(self.A23)
+        df['A24'] = self.Generate4Ans(self.A24)
+        df['A25'] = self.Generate4Ans(self.A25)
+        df['A26'] = self.Generate4Ans(self.A26)
+        df['A27'] = self.GenerateUneversal(self.A27)#!
+        df['A28'] = self.Generate4Ans(self.A28)
+        df['A29'] = self.Generate4Ans(self.A29)
+        df['A30'] = self.Generate4Ans(self.A30)
+        df['A31'] = self.Generate4Ans(self.A31)
+        df['A32'] = self.Generate4Ans(self.A32)
+        df['A33'] = self.Generate4Ans(self.A33)
+        df['A34'] = self.Generate4Ans(self.A34)
+        df['A35'] = self.GenerateUneversal(self.A35)
+        df['A36'] = self.GenerateUneversal(self.A36)
+        df['A37'] = self.Generate2Ans(self.A37)
+        df['A38'] = self.Generate3Ans(self.A38)
+        df['A39'] = self.Generate3Ans(self.A39)
+        print(df)
+        df = pd.concat((df, df, df))
+        df.to_csv('opros1.csv')
+
+
+Ans = Answers()
+Ans.GenerateDf()
+
+
