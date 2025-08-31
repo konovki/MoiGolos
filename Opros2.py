@@ -7,20 +7,15 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 from datetime import datetime
 
-url = 'https://moigolos.pro/app/KA6'
+url = 'https://moigolos.pro/app/KA6' #Almaz
+# url = 'https://moigolos.pro/app/K6B' #Concern
+
 # df = pd.read_csv('gen3/opros1.csv')
 df = pd.read_csv('opros1.csv')
-sleepAfterAnswer, sleeptime = False, 1
-WaitingTime = 2 * 60
-
-
-# Открываем веб-страницу
-def AnswerRadio(Qwestion, driver, Counter):
-    # time.sleep(0.2)
-    element = WebDriverWait(driver, WaitingTime).until(
-    EC.presence_of_element_located((By.XPATH, "//input[contains(@class, 'ant-radio-input')]"))
-    )
-    def FindAnsText(Qwestion, Index):
+# df = pd.read_csv('test.csv')
+sleepAfterAnswer, sleeptime = False, 0.5
+WaitingTime = 20
+def FindAnsText(Qwestion, Index):
         if Qwestion == 1:
             An = ['успешно развивающееся предприятие', 'предприятие, работающее стабильно (но не развивающееся)',
                   'предприятие, испытывающее определённые трудности',
@@ -159,7 +154,7 @@ def AnswerRadio(Qwestion, driver, Counter):
                   '5 - 10 лет', '10 - 25 лет', '25 лет и больше']
             return An[df['A35'][Index]]
         elif Qwestion == 36:
-            An = ['моложе 20 лет', '20-30 лет', '31-40 лет', '41-50 лет', '51-60 лет', '61-70 лет', 'старше70 лет']
+            An = ['моложе 20 лет', '20-30 лет', '31-35 лет', '36-40 лет', '41-50 лет', '51-60 лет', '61-70 лет', 'старше70 лет']
             return An[df['A36'][Index]]
         elif Qwestion == 37:
             An = ['мужской', 'женский']
@@ -173,147 +168,89 @@ def AnswerRadio(Qwestion, driver, Counter):
         elif Qwestion == 4:
             return str(Index)
 
-    Answer = FindAnsText(Qwestion, Counter)
-    radio_buttons = driver.find_elements(By.XPATH, "//input[contains(@class, 'ant-radio-input')]")
-    for radio_button in radio_buttons:
-        if radio_button.accessible_name == Answer:
-            radio_button.click()
-    if sleepAfterAnswer:
-        time.sleep(sleeptime)
+
+
+# Открываем веб-страницу
+
 
 
 def AnswerNPS(driver, Index):
-    # time.sleep(2)
     element = WebDriverWait(driver, WaitingTime).until(
     EC.presence_of_element_located((By.CLASS_NAME, 'ballWrapper_9614cd1c3d8059991014d17c5effe8ff'))
     )
     radio_buttons = driver.find_elements(By.CLASS_NAME, 'ballWrapper_9614cd1c3d8059991014d17c5effe8ff')
-    # print(radio_buttons)
-    # print('df[A4][Index]',df['A4'][Index])
-    # print('len(radio_buttons)',len(radio_buttons))
+
     for radio_button in radio_buttons:
-        # print(radio_button.text)
         if radio_button.text == str(df['A4'][Index]):
             radio_button.click()
-    if sleepAfterAnswer:
-        time.sleep(sleeptime)
+
+class text_to_be_equal_to:
+    def __init__(self, locator, text):
+        self.locator = locator
+        self.text = text
+        
+    def __call__(self, driver):
+        try:
+            element_text = driver.find_element(*self.locator).text
+            return element_text == self.text
+        except:
+            return False
 
 
-def AnswerForm(FormNumber, driver):
-    try:
-        button = driver.find_element(By.CLASS_NAME, 'ant-btn-primary')
-        button.click()
-    #     element = WebDriverWait(driver, WaitingTime).until(
-    # EC.presence_of_element_located((By.CLASS_NAME, 'ant-btn-primary'))
-    # )
-        time.sleep(sleeptime)
-        # print(f'Вопрос {FormNumber} отвечен')
-    except:
-        print(f'Вопрос {FormNumber} не отвечен: {driver}')
 
 
 # Явное ожидание, чтобы убедиться, что кнопка доступна
 corr, uncorr = 0, 0
+errors = []
 counter = 0
-for i in range(len(df['A1'])):
+FormsNumber = df.shape[0]
+
+for i in range(FormsNumber):
     t1 = datetime.now()
-    driver = webdriver.Chrome()
-    driver.get(url)
-    element = WebDriverWait(driver, WaitingTime).until(
-    EC.presence_of_element_located((By.XPATH, "//input[contains(@class, 'ant-radio-input')]"))
-    )
-    # time.sleep(6)
+    flag = False
+    while not flag:
+        try:
+            driver = webdriver.Chrome()
+            driver.get(url)
+            element = WebDriverWait(driver, WaitingTime).until(
+            EC.presence_of_element_located((By.XPATH, "//input[contains(@class, 'ant-radio-input')]"))
+            )
+            flag = True
+        except:
+            print(f'Reload Form: {datetime.now().time()}')
+            driver.quit()
+
     try:
-        AnswerRadio(1, driver, counter)
-        AnswerForm(1, driver)
-        AnswerRadio(2, driver, counter)
-        AnswerForm(2, driver)
-        AnswerRadio(3, driver, counter)
-        AnswerForm(3, driver)
-        # AnswerRadio(4, driver, counter)
-        AnswerNPS(driver, counter)
-        AnswerForm(4, driver)
-        AnswerRadio(5, driver, counter)
-        AnswerForm(5, driver)
-        AnswerRadio(6, driver, counter)
-        AnswerForm(6, driver)
-        AnswerRadio(7, driver, counter)
-        AnswerForm(7, driver)
-        AnswerRadio(8, driver, counter)
-        AnswerForm(8, driver)
-        AnswerRadio(9, driver, counter)
-        AnswerForm(9, driver)
-        AnswerRadio(10, driver, counter)
-        AnswerForm(10, driver)
-        AnswerRadio(11, driver, counter)
-        AnswerForm(11, driver)
-        AnswerRadio(12, driver, counter)
-        AnswerForm(12, driver)
-        AnswerRadio(13, driver, counter)
-        AnswerForm(13, driver)
-        AnswerRadio(14, driver, counter)
-        AnswerForm(14, driver)
-        AnswerRadio(15, driver, counter)
-        AnswerForm(15, driver)
-        AnswerRadio(16, driver, counter)
-        AnswerForm(16, driver)
-        AnswerRadio(17, driver, counter)
-        AnswerForm(17, driver)
-        AnswerRadio(18, driver, counter)
-        AnswerForm(18, driver)
-        AnswerRadio(19, driver, counter)
-        AnswerForm(19, driver)
-        AnswerRadio(20, driver, counter)
-        AnswerForm(20, driver)
-        AnswerRadio(21, driver, counter)
-        AnswerForm(21, driver)
-        AnswerRadio(22, driver, counter)
-        AnswerForm(22, driver)
-        AnswerRadio(23, driver, counter)
-        AnswerForm(23, driver)
-        AnswerRadio(24, driver, counter)
-        AnswerForm(24, driver)
-        AnswerRadio(25, driver, counter)
-        AnswerForm(25, driver)
-        AnswerRadio(26, driver, counter)
-        AnswerForm(26, driver)
-        AnswerRadio(27, driver, counter)
-        AnswerForm(27, driver)
-        AnswerRadio(28, driver, counter)
-        AnswerForm(28, driver)
-        AnswerRadio(29, driver, counter)
-        AnswerForm(29, driver)
-        AnswerRadio(30, driver, counter)
-        AnswerForm(30, driver)
-        AnswerRadio(31, driver, counter)
-        AnswerForm(31, driver)
-        AnswerRadio(32, driver, counter)
-        AnswerForm(32, driver)
-        AnswerRadio(33, driver, counter)
-        AnswerForm(33, driver)
-        AnswerRadio(34, driver, counter)
-        AnswerForm(34, driver)
-        AnswerRadio(35, driver, counter)
-        AnswerForm(35, driver)
-        AnswerRadio(36, driver, counter)
-        AnswerForm(36, driver)
-        AnswerRadio(37, driver, counter)
-        AnswerForm(37, driver)
-        AnswerRadio(38, driver, counter)
-        AnswerForm(38, driver)
-        AnswerRadio(39, driver, counter)
-        AnswerForm(39, driver)
-        print(f'Форма {i} заполнена за {datetime.now() - t1} {datetime.now()}')
+        k = 1
+        while k < 40:
+            if k == 4:
+                AnswerNPS(driver, counter)
+            else:
+                WebDriverWait(driver, WaitingTime).until(
+                EC.presence_of_element_located((By.XPATH, "//input[contains(@class, 'ant-radio-input')]")))
+                buttons = driver.find_elements(By.XPATH, "//input[contains(@class, 'ant-radio-input')]")
+                button = buttons[df[f'A{k}'][counter]]
+                button.click()
+            WebDriverWait(driver, WaitingTime).until(EC.element_to_be_clickable((By.CLASS_NAME, 'ant-btn-primary')))
+            button = driver.find_element(By.CLASS_NAME, 'ant-btn-primary')
+            button.click()
+            if k != 39:
+                WebDriverWait(driver,WaitingTime).until(text_to_be_equal_to((By.CLASS_NAME, 'surveyProgress_a8176cece3ddc9b524a852b2d9ca295e'), f'{k+1} / 39'))
+            k += 1
         driver.quit()
-        time.sleep(sleeptime)
         counter += 1
+        corr += 1 
+        print(f'Форма {i+1} из {FormsNumber} заполнена за {int((datetime.now() - t1).total_seconds())} {datetime.now().time()} {corr} {uncorr } {counter}')
     except Exception as e:
         counter += 1
         uncorr += 1
-        print(f'Форма {i} не заполнена за {datetime.now() - t1} {datetime.now()}')
-        # print(f"Ошибка: {e}")
+        driver.quit()
+        print(f'Форма {i+1} из {FormsNumber} не заполнена за {int((datetime.now() - t1).total_seconds())} {datetime.now()} {datetime.now().time()} {corr} {uncorr } {counter}')
+        print(f"Ошибка: {e}")
+        errors.append(i)
 
 print('Правильно отправлены', corr)
 print('Неравильно отправлены', uncorr)
+print('errors',errors)
 
 # Закрываем драйвер

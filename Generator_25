@@ -3,12 +3,13 @@ import numpy as np
 
 # import matplotlib.pyplot as plt
 
-N = 1000
+
 
 
 class Answers():
     def __init__(self):
         self.NumberOfPeople = 100
+        self.X = 2
         self.A1 = [57, 32, 10, 1]
         self.A2 = [71, 21,5,3]
         self.A3 = [40, 52, 7, 1]
@@ -112,12 +113,33 @@ class Answers():
         df['A37'] = self.Generate2Ans(self.A37)
         df['A38'] = self.Generate3Ans(self.A38)
         df['A39'] = self.Generate3Ans(self.A39)
-        print(df)
-        df = pd.concat((df, df, df))
-        df.to_csv('opros1.csv')
+        
+        df = pd.concat(([df]*self.X)).reset_index(drop=True)
+        shuffled_indices = np.random.permutation(df.index)
+        df_shuffled = df.loc[shuffled_indices].reset_index(drop=True)
+        print(df_shuffled)
+        df_shuffled.to_csv('opros1.csv')
 
+class Obrab():
+    def load(self):
+        df = pd.read_csv('opros1.csv')
+        df = df.drop(columns=['Unnamed: 0'])
+        print(df.columns)
+        print(df)
+        df_new = pd.DataFrame()
+        for column in df.columns:
+            temp_df = pd.DataFrame({f'{column}': df[f'{column}'].unique().astype(int)})
+            if df_new.empty:
+                df_new = temp_df
+            else:
+                df_new = pd.concat([df_new, temp_df], axis=1)
+        df_new = df_new.fillna(0).astype(int)
+        print(df_new)
+        df_new.to_csv('./test.csv')
 
 Ans = Answers()
 Ans.GenerateDf()
+# O = Obrab()
+# O.load()
 
 
