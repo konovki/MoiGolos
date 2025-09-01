@@ -137,9 +137,9 @@ class Obrab():
         print(df_new)
         df_new.to_csv('./test.csv')
 
-Ans = Answers()
-Ans.GenerateDf()
-# O = Obrab()
-# O.load()
+# Ans = Answers()
+# Ans.GenerateDf()
+O = Obrab()
+O.load()
 
 

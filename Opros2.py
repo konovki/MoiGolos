@@ -7,7 +7,8 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 from datetime import datetime
 
-url = 'https://moigolos.pro/app/KA6' #Almaz
+# url = 'https://moigolos.pro/app/KA6' #Almaz
+url = 'https://moigolos.pro/app/KB1' #Almaz_2
 # url = 'https://moigolos.pro/app/K6B' #Concern
 
 # df = pd.read_csv('gen3/opros1.csv')
