@@ -9,7 +9,7 @@ import numpy as np
 class Answers():
     def __init__(self):
         self.NumberOfPeople = 100
-        self.X = 9
+        self.X = 2
         self.A1 = [57, 32, 10, 1]
         self.A2 = [71, 21,5,3]
         self.A3 = [52, 40, 7, 1]
@@ -34,7 +34,7 @@ class Answers():
         self.A22 = [35, 42, 16, 7]
         self.A23 = [42, 48, 7, 3]
         self.A24 = [30, 48, 17, 5]
-        self.A25 = [25, 27, 32, 16]
+        self.A25 = [15, 21, 28, 36]
         self.A26 = [31, 47, 17, 5]
         self.A27 = [6, 4, 6, 11,73]
         self.A28 = [52, 34, 8, 6]
