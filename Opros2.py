@@ -8,13 +8,14 @@ import time
 from datetime import datetime
 
 # url = 'https://moigolos.pro/app/KA6' #Almaz
-url = 'https://moigolos.pro/app/KB1' #Almaz_2
-# url = 'https://moigolos.pro/app/K6B' #Concern
+# url = 'https://moigolos.pro/app/KB1' #Almaz_2
+url = 'https://moigolos.pro/app/K6B' #Concern
 
 # df = pd.read_csv('gen3/opros1.csv')
 df = pd.read_csv('opros1.csv')
 # df = pd.read_csv('test.csv')
 sleepAfterAnswer, sleeptime = False, 0.5
+st1,st2 = 0.3,0.2
 WaitingTime = 20
 def FindAnsText(Qwestion, Index):
         if Qwestion == 1:
@@ -230,10 +231,21 @@ for i in range(FormsNumber):
                 WebDriverWait(driver, WaitingTime).until(
                 EC.presence_of_element_located((By.XPATH, "//input[contains(@class, 'ant-radio-input')]")))
                 buttons = driver.find_elements(By.XPATH, "//input[contains(@class, 'ant-radio-input')]")
+                time.sleep(st1)
+                # print(buttons)
+                # time.sleep(sleeptime)
+                # print(counter)
+                # print(df)
+                # print(df[f'A{k}'][counter])
+                time.sleep(st2)
+                # time.sleep(5*60)
                 button = buttons[df[f'A{k}'][counter]]
+                
                 button.click()
+                
             WebDriverWait(driver, WaitingTime).until(EC.element_to_be_clickable((By.CLASS_NAME, 'ant-btn-primary')))
             button = driver.find_element(By.CLASS_NAME, 'ant-btn-primary')
+            # time.sleep(sleeptime)
             button.click()
             if k != 39:
                 WebDriverWait(driver,WaitingTime).until(text_to_be_equal_to((By.CLASS_NAME, 'surveyProgress_a8176cece3ddc9b524a852b2d9ca295e'), f'{k+1} / 39'))
