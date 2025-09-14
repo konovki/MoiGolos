@@ -9,7 +9,7 @@ import numpy as np
 class Answers():
     def __init__(self):
         self.NumberOfPeople = 100
-        self.X = 1
+        self.X = 3
         self.A1 = [57, 32, 10, 1]
         self.A2 = [71, 21,5,3]
         self.A3 = [52, 40, 7, 1]

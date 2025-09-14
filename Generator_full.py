@@ -4,15 +4,14 @@ import math as m
 
 class Generator:
     def __init__(self):
-        self.NumberOfPeople = 200
+        self.NumberOfPeople = 1000
         columns = [f'A{i+1}' for i in range(39)]
         self.df = pd.DataFrame(np.nan, index=range(self.NumberOfPeople) , columns=columns)
-        print(self.df)
-        self.X = 2
+        self.X = 30
         self.A1 = [57, 32, 10, 1]
         self.A2 = [71, 21,5,3]
-        self.A3 = [52, 40, 7, 1]
-        self.A4 = [1,3,3,5,6,6,9,34,25,8]
+        self.A3 = [52, 40, 7, 1] #удовл 51
+        self.A4 = [1,3,3,5,6,6,9,34,25,8] #лоялтность 49
         self.A5 = [9,11,8,12,40,8,1,11]
         self.A6 = [5, 6, 18, 3, 3, 5, 49,11]
         self.A7 = [9, 20, 36, 35]
@@ -49,12 +48,12 @@ class Generator:
         self.A38 = [15, 29, 56]
         self.A39 = [20, 40, 40]
         categories = {'yang':[0,1],'profi':[2,3,4],'Sprofi':[5,6],'old':[7]}
-        loyality = {'yang':[46, 37, 16, 1],'profi':[52, 40, 7, 1],'Sprofi':[63, 32, 4, 1],'old':[63, 32, 4, 1]}
+        satisfaction = {'yang':[49, 32, 16, 3],'profi':[54, 38, 6, 2],'Sprofi':[55, 32, 6, 5],'old':[62, 31, 4, 3]}
         gender = {'yang':[58,42],'profi':[62,38],'Sprofi':[71,29],'old':[75,25]}
-        satisfaction = {'yang':[0,1,3,3,5,6,6,9,34,25,8]
-                        ,'profi':[0,1,3,3,4,5,7,8,33,27,9],
+        loyality= {'yang':[0,2,2,3,5,5,7,7,30,22,17]
+                        ,'profi':[0,2,3,3,5,5,7,9,29,26,11],
                         'Sprofi':[0,1,3,3,3,5,6,9,34,26,10],
-                        'old':[0,1,3,3,3,5,6,9,34,26,10]}
+                           'old':[0,0,0,0,3,3,4,4,34,31,20]}
         #36
         self.df = self.setColumn(self.A36,self.NumberOfPeople,self.df,'A36')
         self.checkStatsAge(self.df,'A36')
@@ -65,10 +64,10 @@ class Generator:
         self.df = self.setColumn(self.A2,self.NumberOfPeople,self.df,'A2')
         # self.checkStats(self.df,'A2')
         #3
-        self.df = Generator.answ_by_categories(categories,'A36','A3',loyality,self.df)
+        self.df = Generator.answ_by_categories(categories,'A36','A3',satisfaction,self.df)
         self.checkStats(self.df,'A3')
         #4
-        self.df = Generator.answ_by_categories(categories,'A36','A4',satisfaction,self.df)
+        self.df = Generator.answ_by_categories(categories,'A36','A4',loyality,self.df)
         self.checkStats(self.df,'A4')
         #5
         self.df = self.setColumn(self.A5,self.NumberOfPeople,self.df,'A5')
@@ -218,7 +217,7 @@ class Generator:
         vals = []
         vPositive = (df[df['A4'].isin([8,9,10])]).shape[0]/df.shape[0]
         vNegative = (df[df['A4'].isin([0,1,2,3,4,5])]).shape[0]/df.shape[0]
-        print('Full loyality:',vPositive-vNegative)
+        print('Целевое значение 49 \n Full loyality:',vPositive-vNegative)
         for cat in categories.keys():
             tmp = df[df['A36'].isin(categories[cat])]
             vPositive = (tmp[tmp['A4'].isin([8,9,10])]).shape[0]/tmp.shape[0]
@@ -227,7 +226,7 @@ class Generator:
             vals.append(val)
         result = pd.DataFrame({'Category': counts, 'Percentage': vals})
         print('check loyality\n',result)
-        print(result['Percentage'].sum())
+
         
     @staticmethod
     def check_loyality(df):#удовл 51
@@ -235,13 +234,13 @@ class Generator:
         categories = {'yang':[0,1],'profi':[2,3,4],'Sprofi':[5,6],'old':[7]}
         counts = categories.keys()
         vals = []
-        vPositive = (df[df['A3'].isin([1])]).shape[0]/df.shape[0]
-        vNegative = (df[df['A3'].isin([4])]).shape[0]/df.shape[0]
-        print('Full satisfaction:',vPositive-vNegative)
+        vPositive = (df[df['A3'].isin([0])]).shape[0]/df.shape[0]
+        vNegative = (df[df['A3'].isin([3])]).shape[0]/df.shape[0]
+        print('Целевое значение 51 \n Full satisfaction:',vPositive-vNegative)
         for cat in categories.keys():
             tmp = df[df['A36'].isin(categories[cat])]
-            vPositive = (tmp[tmp['A3'].isin([1])]).shape[0]/tmp.shape[0]
-            vNegative = (tmp[tmp['A3'].isin([4])]).shape[0]/tmp.shape[0]
+            vPositive = (tmp[tmp['A3'].isin([0])]).shape[0]/tmp.shape[0]
+            vNegative = (tmp[tmp['A3'].isin([3])]).shape[0]/tmp.shape[0]
             val = vPositive-vNegative
             vals.append(val)
         result = pd.DataFrame({'Category': counts, 'Percentage': vals})
@@ -256,10 +255,10 @@ class Generator:
         percentages = df[col].value_counts(normalize=True) * 100
         # Объединение в один DataFrame
         result = pd.DataFrame({'Count': counts, 'Percentage': percentages})
-        print(col,result['Count'].sum(),result['Percentage'].sum())
-        # print(df.shape)
+        # print('\n',col,result['Count'].sum(),result['Percentage'].sum())
+        print(df.shape)
         # print('Nan\n',df[df[col].isna()])
-        print(result)
+        print('\n',result)
     @staticmethod
     def checkStatsAge(df,col):
         print('checkStatsAge')
