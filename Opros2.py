@@ -15,8 +15,8 @@ url = 'https://moigolos.pro/app/KB1' #Almaz_2
 df = pd.read_csv('opros1.csv')
 # df = pd.read_csv('test.csv')
 sleepAfterAnswer, sleeptime = False, 0.1
-st1,st2 = 0.1,0.1
-sleep = False
+st1,st2,st3 = 0.2,0.2,1
+sleep = True
 WaitingTime = 60
 def FindAnsText(Qwestion, Index):
         if Qwestion == 1:
@@ -238,13 +238,14 @@ for i in range(FormsNumber):
                 if sleep:
                     time.sleep(st2)                
                 button.click()
-                
+            time.sleep(st2)        
             WebDriverWait(driver, WaitingTime).until(EC.element_to_be_clickable((By.CLASS_NAME, 'ant-btn-primary')))
             button = driver.find_element(By.CLASS_NAME, 'ant-btn-primary')
             button.click()
             if k != 39:
                 WebDriverWait(driver,WaitingTime).until(text_to_be_equal_to((By.CLASS_NAME, 'surveyProgress_a8176cece3ddc9b524a852b2d9ca295e'), f'{k+1} / 39'))
             k += 1
+        time.sleep(st3)
         driver.quit()
         counter += 1
         corr += 1 
